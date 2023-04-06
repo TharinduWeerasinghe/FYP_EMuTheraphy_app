@@ -40,12 +40,21 @@ class HomeTab extends StatelessWidget {
             ),
           ),
           Card(
-            child: ListTile(
-              title: Text("Item One"),
-            ),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text("Item One"),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                ListTile(
+                title: Text("Item One"),
+                ),
+          ],
           )
-        ],
       )
+    ]),
     );
   }
 }
