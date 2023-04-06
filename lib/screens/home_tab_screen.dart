@@ -31,7 +31,8 @@ class HomeTab extends StatelessWidget {
                   child: Column(
                       children: [
                         Text("How Do You Feel Today ? ", style: TextStyle(fontSize: 18, color: mainFontColor, fontWeight: FontWeight.bold),),
-                        Image.asset('assets/images/sad_img.png', width: 200, height: 200,)
+                        Image.asset('assets/images/sad_img.png', width: 200, height: 200,),
+                        Text("Capture Image")
                       ],
                   )
                 )
