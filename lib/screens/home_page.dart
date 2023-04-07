@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/colors.dart';
 import '/screens/camera_tab_screen.dart';
 import '/screens/home_tab_screen.dart';
-
+import '/screens/messages_tab_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,10 +23,7 @@ class _HomePageState extends State<HomePage> {
       'Index 2: School',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+    MessageTab(),
     Text(
       'Index 3: Settings',
       style: optionStyle,
