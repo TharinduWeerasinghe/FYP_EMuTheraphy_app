@@ -64,9 +64,11 @@ flutter:
      - assets/icons/l_icon_img.png
      - assets/images/l_img.png
      - assets/images/testimg.jpg
-     - assets/images/sad_img.png
      - assets/images/happy_img.png
-     - assets/images/happy_s_img.png
+     - assets/images/sad_img.png
+     - assets/images/surprise_img.png
+     - assets/images/enjoy_img.png
+     - assets/images/neutral_img.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
