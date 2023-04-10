@@ -16,7 +16,9 @@ class _HomeTabState extends State<HomeTab> {
   final List<String> _imagePaths = [
     'assets/images/happy_img.png',
     'assets/images/sad_img.png',
-    'assets/images/happy_s_img.png'
+    'assets/images/surprise_img.png',
+    'assets/images/enjoy_img.png',
+    'assets/images/neutral_img.png'
   ];
 
   @override

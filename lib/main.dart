@@ -1,3 +1,7 @@
+import '/screens/login_page.dart';
+import 'screens/register_page.dart';
+
+import 'screens/get_started_page.dart';
 import 'package:emutherapy/screens/home_page.dart';
 
 import 'screens/landing_page.dart';
