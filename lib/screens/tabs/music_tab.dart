@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '/model/song.dart';
 import '/colors.dart';
 import '/screens/pages/add_music_page.dart';
+import '/screens/pages/play_audio_page.dart';
 
 class MusicTab extends StatefulWidget {
   const MusicTab({Key? key}) : super(key: key);
@@ -24,9 +27,29 @@ class _MusicTabState extends State<MusicTab> {
                   child: Text("Music Gallery", style: TextStyle(fontSize: 22, color: mainFontColor, fontWeight: FontWeight.bold,),)
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: StreamBuilder<List<SongData>>(
+                  stream: getSongs(),
+                  builder: (context, snapshot){
+                    if (snapshot.hasError){
+                      return Text('Something went wrong. ${snapshot.error}');
+                    } else if (snapshot.hasData){
+                      final songs = snapshot.data!;
+
+                      return ListView(
+                        padding: EdgeInsets.all(10),
+                        children: songs.map(showSong).toList(),
+                      );
+                    }else {
+                      return const Center(child: CircularProgressIndicator(),);
+                    }
+                  },
+                ),
+              ),
+            )
             ],
           ),
         Positioned(
@@ -47,4 +70,38 @@ class _MusicTabState extends State<MusicTab> {
       ]
     );
   }
+
+  Widget showSong(SongData song) => Card(
+    margin: const EdgeInsets.only(bottom: 12),
+    color: mainBGColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: ListTile(
+      textColor: mainFontColor,
+      leading: Image.network(song.imageUrl),
+      title: Text(song.name),
+      subtitle: Text(song.artist),
+      trailing: const Icon(Icons.play_circle, color: darkOrangeColor,),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlayAudioPage(song : song),
+          ),
+        );
+      },
+    ),
+  );
+
+  Stream<List<SongData>> getSongs() =>
+      FirebaseFirestore.instance
+          .collection('songs')
+          .snapshots()
+          .map((snapshot) =>
+          snapshot.docs.map((doc) =>
+              SongData.fromJson(doc.data())).toList(),
+      );
+
+
 }

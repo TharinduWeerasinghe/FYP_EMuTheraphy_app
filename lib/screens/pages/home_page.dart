@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     const CameraTab(),
     const MusicTab(),
     const ContactTab(),
-    ProfileTab(),
+    const ProfileTab(),
   ];
 
   void _onItemTapped(int index) {

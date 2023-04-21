@@ -13,63 +13,84 @@ class ContactTab extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                 child: Align(
                     alignment: Alignment.topCenter,
-                    child: Text("Contact Details", style: TextStyle(fontSize: 22,
+                    child: Text("Music Therapist", style: TextStyle(fontSize: 22,
                       color: mainFontColor,
                       fontWeight: FontWeight.bold,),)
                 ),
               ),
-              SizedBox(
-                height: 25,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          'Music Therapist Name',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Dr. Ajith Kumara',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          'Contact Number',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '+94 71 421 2378',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          'E-Mail',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'ajithkumara@gmail.com',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                        child: Image.asset("assets/images/contact_t_img.png")
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                'Music Therapist Name',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+              const SizedBox(
+                height: 30,
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Dr. Ajith Kumara',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Contact Number',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                '+94 71 421 2378',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'E-Mail',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'ajithkumara@gmail.com',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                 child: Align(
                     alignment: Alignment.topCenter,
@@ -78,48 +99,70 @@ class ContactTab extends StatelessWidget {
                       fontWeight: FontWeight.bold,),)
                 ),
               ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Name',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Tharindu Weerasinghe',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Contact Number',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                '+94 76 866 0292',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'E-Mail',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'tharindu.2019087@iit.ac.lk',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
-              ),
+             Container(
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(20),
+                 color: Colors.white,
+               ),
+               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+               child: Row(
+                 children: [
+                   Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: const [
+                       SizedBox(
+                         height: 25,
+                       ),
+                       Text(
+                         'Name',
+                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 5,
+                       ),
+                       Text(
+                         'Tharindu Weerasinghe',
+                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 25,
+                       ),
+                       Text(
+                         'Contact Number',
+                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 5,
+                       ),
+                       Text(
+                         '+94 76 866 0292',
+                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 25,
+                       ),
+                       Text(
+                         'E-Mail',
+                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 5,
+                       ),
+                       Text(
+                         'tharindu.2019087@iit.ac.lk',
+                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainFontColor),
+                       ),
+                       SizedBox(
+                         height: 20,
+                       ),
+                     ],
+                   ),
+                   Expanded(
+                       child: Image.asset("assets/images/contact_d_img.png")
+                   ),
+                 ],
+               ),
+             )
     ]
         ),
       ),

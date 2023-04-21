@@ -88,6 +88,10 @@ flutter:
      - assets/icons/l_icon_img.png
      - assets/icons/logo.png
      - assets/images/l_img.png
+     - assets/images/r_img.png
+     - assets/images/default_user.png
+     - assets/images/contact_t_img.png
+     - assets/images/contact_d_img.png
      - assets/images/testimg.jpg
      - assets/images/happy_img.png
      - assets/images/sad_img.png
