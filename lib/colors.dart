@@ -8,3 +8,4 @@ const Color ashColor = Color(0xFF7D7D7D);
 
 //colors with opacity
 Color mainBGColor30 = const Color(0xFFF5D19B).withOpacity(0.3);
+Color mainBGColor40 = const Color(0xFFF5D19B).withOpacity(0.5);

@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '/colors.dart';
-import '/screens/camera_tab_screen.dart';
-import '/screens/home_tab_screen.dart';
-import '/screens/messages_tab_screen.dart';
+import '/screens/tabs/camera_tab_screen.dart';
+import '/screens/tabs/home_tab_screen.dart';
+import '../tabs/profile_tab_screen.dart';
+import '/screens/tabs/music_tab.dart';
+import '/screens/tabs/contact_tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
+
+  static _HomePageState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_HomePageState>();
+
 }
 
 class _HomePageState extends State<HomePage> {
+
+  void onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeTab(),
-    CameraTab(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    MessageTab(),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeTab(),
+    const CameraTab(),
+    const MusicTab(),
+    const ContactTab(),
+    ProfileTab(),
   ];
 
   void _onItemTapped(int index) {
@@ -38,9 +44,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: secondBGColor,
+    return Scaffold(
+      backgroundColor: secondBGColor,
+      appBar:AppBar(
+          leading: Padding(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+            child: Image.asset('assets/icons/logo.png'),
+          ),
+          backgroundColor: secondBGColor,
+          elevation: 0,
+          title: const Text("EMuTherapy", style: TextStyle(fontSize: 26, color: mainFontColor, fontWeight: FontWeight.bold,),),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.exit_to_app, color: mainFontColor,),
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        ),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
@@ -57,13 +79,13 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: mainBGColor
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favourite',
+              icon: Icon(Icons.audiotrack_rounded),
+              label: 'Music',
                 backgroundColor: mainBGColor
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.message),
-              label: 'Messages',
+              icon: Icon(Icons.contact_phone),
+              label: 'Contact',
                 backgroundColor: mainBGColor
             ),
             BottomNavigationBarItem(
@@ -81,7 +103,6 @@ class _HomePageState extends State<HomePage> {
           onTap: _onItemTapped,
           backgroundColor: mainBGColor,
         ),
-      ),
-    );
+      );
   }
 }

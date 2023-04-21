@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '/colors.dart';
+import '/screens/pages/emo_result_page.dart';
 
 class CameraTab extends StatefulWidget {
   const CameraTab({Key? key}) : super(key: key);
@@ -10,6 +14,38 @@ class CameraTab extends StatefulWidget {
 }
 
 class _CameraTabState extends State<CameraTab> {
+
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) return;
+      
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+        print(e);
+    }
+
+  }
+
+  Future getImage() async{
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if(image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,13 +64,19 @@ class _CameraTabState extends State<CameraTab> {
               const SizedBox(
                 height: 20,
               ),
-              const Card(
+              Card(
                 color: ashColor,
                 child: SizedBox(
                   width: 350,
                   height: 400,
                   child: Center(
-                    child: Icon(Icons.add, size: 200, color: mainFontColor,),
+                    child: image != null
+                        ? Image.file(
+                            image!,
+                            width: 300,
+                            height: 300,
+                          )
+                        :Icon(Icons.add, size: 200, color: mainFontColor,),
                   ),
                 ),
               ),
@@ -47,7 +89,10 @@ class _CameraTabState extends State<CameraTab> {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      debugPrint('Card tapped.');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EmotionResultPage()),
+                      );
                     },
                     child: Container(
                       height: 70,
@@ -55,13 +100,13 @@ class _CameraTabState extends State<CameraTab> {
                       decoration: BoxDecoration(
                         color: mainBGColor30,
                         border: Border.all(color: mainBGColor, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(18)),
+                        borderRadius: const BorderRadius.all(Radius.circular(18)),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Icon(Icons.more_horiz,color: mainFontColor),
-                          Text("More", style: TextStyle(fontSize: 16, color: mainFontColor, fontWeight: FontWeight.bold,),)
+                          Icon(Icons.emoji_emotions,color: mainFontColor),
+                          Text("Emotion", style: TextStyle(fontSize: 16, color: mainFontColor, fontWeight: FontWeight.bold,),)
                         ],
                       ),
                     ),
@@ -70,9 +115,7 @@ class _CameraTabState extends State<CameraTab> {
                     width: 30.0,
                   ),
                   GestureDetector(
-                    onTap: (){
-                      debugPrint('Card tapped.');
-                    },
+                    onTap: getImage,
                     child: Container(
                       height: 90,
                       width: 100,
@@ -94,9 +137,7 @@ class _CameraTabState extends State<CameraTab> {
                     width: 30.0,
                   ),
                   GestureDetector(
-                    onTap: (){
-                      debugPrint('Card tapped.');
-                    },
+                    onTap: pickImage,
                     child: Container(
                       height: 70,
                       width: 80,
