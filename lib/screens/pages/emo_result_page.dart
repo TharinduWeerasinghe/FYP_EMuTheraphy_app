@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '/colors.dart';
 
 class EmotionResultPage extends StatefulWidget {
-  const EmotionResultPage({Key? key}) : super(key: key);
+
+  List<String>? emotions;
+
+  EmotionResultPage({Key? key, required this.emotions}) : super(key: key);
+
 
   @override
   State<EmotionResultPage> createState() => _EmotionResultPageState();
@@ -16,6 +22,9 @@ class _EmotionResultPageState extends State<EmotionResultPage> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+
+  //get imageReceive => imageReceive;
+
 
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
@@ -85,11 +94,21 @@ class _EmotionResultPageState extends State<EmotionResultPage> {
                 child:  SizedBox(
                   width: double.infinity,
                   height: 150,
-                  child: Column(
-                    children: const [
-                      Text("Happy", style: TextStyle(fontSize: 18, color: mainFontColor, fontWeight: FontWeight.bold,),),
-                      Text("Sad", style: TextStyle(fontSize: 18, color: mainFontColor, fontWeight: FontWeight.bold,),)
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 35),
+                    child: Column(
+                      children: [
+                        for (var emotion in widget.emotions!)
+                          Text(
+                            emotion,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: mainFontColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),

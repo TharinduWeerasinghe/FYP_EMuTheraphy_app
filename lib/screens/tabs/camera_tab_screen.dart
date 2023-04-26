@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 import '/colors.dart';
 import '/screens/pages/emo_result_page.dart';
@@ -15,7 +17,10 @@ class CameraTab extends StatefulWidget {
 
 class _CameraTabState extends State<CameraTab> {
 
-  File? image;
+  File? imageUploaded;
+
+  var prediction;
+  List<String>? emotions;
 
   Future pickImage() async {
     try {
@@ -24,7 +29,7 @@ class _CameraTabState extends State<CameraTab> {
       
       final imageTemporary = File(image.path);
       setState(() {
-        this.image = imageTemporary;
+        imageUploaded = imageTemporary;
       });
     } on PlatformException catch (e) {
         print(e);
@@ -39,11 +44,43 @@ class _CameraTabState extends State<CameraTab> {
 
       final imageTemporary = File(image.path);
       setState(() {
-        this.image = imageTemporary;
+        imageUploaded = imageTemporary;
       });
     } on PlatformException catch (e) {
       print(e);
     }
+  }
+
+  Future<List> uploadImage() async {
+    final response = await http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            "http://10.0.2.2:4000/predict"));
+    final headers = {"Content-Type": "multipart/form-data"};
+
+    response.files.add(http.MultipartFile(
+        'file', imageUploaded!.readAsBytes().asStream(), imageUploaded!.lengthSync(),
+        filename:
+        imageUploaded!.path.split("/").last));
+    response.headers.addAll(headers);
+    final reqResponse = await response.send();
+    http.Response returnResponse = await http.Response.fromStream(
+        reqResponse);
+    setState(() {});
+
+    Map<String, dynamic> data = json.decode(returnResponse.body);
+    String prediction = data['prediction'];
+    List<String> emotionList = prediction.split(', ');
+    print(emotionList);
+
+    return emotionList;
+  }
+
+  loadNextPage () async{
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EmotionResultPage(emotions: emotions)),
+    );
   }
 
   @override
@@ -70,13 +107,13 @@ class _CameraTabState extends State<CameraTab> {
                   width: 350,
                   height: 400,
                   child: Center(
-                    child: image != null
+                    child: imageUploaded != null
                         ? Image.file(
-                            image!,
+                            imageUploaded!,
                             width: 300,
                             height: 300,
                           )
-                        :Icon(Icons.add, size: 200, color: mainFontColor,),
+                        :const Icon(Icons.add, size: 200, color: mainFontColor,),
                   ),
                 ),
               ),
@@ -88,11 +125,9 @@ class _CameraTabState extends State<CameraTab> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const EmotionResultPage()),
-                      );
+                    onTap: () async {
+                      emotions = await uploadImage() as List<String>?;
+                      await loadNextPage();
                     },
                     child: Container(
                       height: 70,

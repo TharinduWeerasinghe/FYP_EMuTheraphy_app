@@ -19,20 +19,20 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-MODEL_PATH = 'C:/Users/User/ResNet50_Model.h5'
+MODEL_PATH = 'D:/FYP/FYP_EMuTheraphy_app/ML_DeepLearningModel.h5'
 
 
 model = load_model(MODEL_PATH)
 
 
-class_names = []
+categories = ['Surprise', 'Fear', 'Disgust', 'Happiness', 'Sadness', 'Anger']
 
 # print('Model loaded. Check http://127.0.0.1:4000/')
 print('Model loaded. Check http://127.0.0.1:4000/')
 
 
 def model_predict(img_path, model):
-    img = tf.keras.utils.load_img(img_path, target_size=(128, 128))
+    img = tf.keras.utils.load_img(img_path, target_size=(100, 100))
     x = tf.keras.utils.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     preds = model.predict(x)
@@ -47,17 +47,24 @@ def upload():
         file_path = os.path.join(
             basepath, 'uploads', secure_filename(f.filename))
         f.save(file_path)
-        preds = model_predict(file_path, model)
+        pred = model_predict(file_path, model)
+        
+        threshold = 0.5
+        labels = []
+        for i, prob in enumerate(pred[0]):
+            if prob > threshold:
+                labels.append(categories[i])
 
-        if np.amax(preds) > 0.6:
-            result = class_names[int(np.argmax(preds,axis=1))]
+        # check if at least one label was assigned
+        if len(labels) > 0:
+            result = ', '.join(labels)
         else:
             result = "Invalid image"
+            
         print('prediction' , result )
-        return jsonify({'prediction' : preds})
-    print(jsonify({'prediction' : result}))
-    return None
-
+        return jsonify({'prediction' : result})
+    
+    return jsonify({'prediction' : "No file was uploaded."})
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
