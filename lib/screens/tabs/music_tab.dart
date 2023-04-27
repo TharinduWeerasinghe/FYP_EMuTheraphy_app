@@ -79,7 +79,10 @@ class _MusicTabState extends State<MusicTab> {
     ),
     child: ListTile(
       textColor: mainFontColor,
-      leading: Image.network(song.imageUrl),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(15.0),
+        child: Image.network(song.imageUrl),
+      ),
       title: Text(song.name),
       subtitle: Text(song.artist),
       trailing: const Icon(Icons.play_circle, color: darkOrangeColor,),

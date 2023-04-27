@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '/model/song.dart';
 import '/colors.dart';
 
 class EmotionResultPage extends StatefulWidget {
@@ -69,6 +71,15 @@ class _EmotionResultPageState extends State<EmotionResultPage> {
     });
   }
 
+  Stream<List<SongData>> getSongs() =>
+      FirebaseFirestore.instance
+          .collection('songs')
+          .snapshots()
+          .map((snapshot) =>
+          snapshot.docs.map((doc) =>
+              SongData.fromJson(doc.data())).toList(),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,72 +133,23 @@ class _EmotionResultPageState extends State<EmotionResultPage> {
                   color: mainBGColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child:  SizedBox(
-                  width: double.infinity,
-                  height: 350,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/emutherapy-aae03.appspot.com/o/image%2FIMG_20230420_124658.jpg?alt=media&token=3d199bd3-b57f-4e7c-b8c2-5d83851529f1",
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text("Title"),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text("Artist"),
-                      Slider(
-                        activeColor: darkOrangeColor,
-                        inactiveColor: secondBGColor,
-                        min: 0,
-                          max: duration.inSeconds.toDouble(),
-                          value: position.inSeconds.toDouble(),
-                          onChanged: (value) async {
-                            final position = Duration(seconds: value.toInt());
-                            await audioPlayer.seek(position);
-
-                            await audioPlayer.resume();
+                child:  StreamBuilder<List<SongData>>(
+                  stream: getSongs(),
+                  builder: (context, snapshot){
+                    if (snapshot.hasError){
+                      return Text('Something went wrong. ${snapshot.error}');
+                    } else if (snapshot.hasData){
+                        final songs = snapshot.data!;
+                        for (final SongData song in songs) {
+                          if (song.type == widget.emotions![0]) {
+                            return suggestSong(song);
                           }
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(formatTime(position)),
-                              Text(formatTime(duration - position))
-                            ],
-                          ),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: darkOrangeColor,
-                        radius: 35,
-                        child: IconButton(
-                          color: mainFontColor,
-                          icon: Icon(
-                            isPlaying ? Icons.pause_circle: Icons.play_circle,
-                          ),
-                          iconSize: 50,
-                          onPressed: () async {
-                            if(isPlaying) {
-                              await audioPlayer.pause();
-                            }else {
-                              String url = 'https://firebasestorage.googleapis.com/v0/b/emutherapy-aae03.appspot.com/o/song%2FKutti-Story-MassTamilan.io.mp3?alt=media&token=a2b982a0-56f6-46bc-a55b-33cebe19cb21';
-                              await audioPlayer.play(url);
-                            }
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                        }
+                        return suggestSongNo();
+                    }else {
+                      return const Center(child: CircularProgressIndicator(),);
+                    }
+                  },
                 ),
               ),
             ],
@@ -196,4 +158,145 @@ class _EmotionResultPageState extends State<EmotionResultPage> {
       ),
     );
   }
+
+  Widget suggestSong(SongData song){
+    return SizedBox(
+      width: double.infinity,
+      height: 350,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              song.imageUrl,
+              height: 120,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(song.name),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(song.artist),
+          Slider(
+              activeColor: darkOrangeColor,
+              inactiveColor: secondBGColor,
+              min: 0,
+              max: duration.inSeconds.toDouble(),
+              value: position.inSeconds.toDouble(),
+              onChanged: (value) async {
+                final position = Duration(seconds: value.toInt());
+                await audioPlayer.seek(position);
+
+                await audioPlayer.resume();
+              }
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(formatTime(position)),
+                Text(formatTime(duration - position))
+              ],
+            ),
+          ),
+          CircleAvatar(
+            backgroundColor: darkOrangeColor,
+            radius: 35,
+            child: IconButton(
+              color: mainFontColor,
+              icon: Icon(
+                isPlaying ? Icons.pause_circle: Icons.play_circle,
+              ),
+              iconSize: 50,
+              onPressed: () async {
+                if(isPlaying) {
+                  await audioPlayer.pause();
+                }else {
+                  String url = song.audioUrl;
+                  await audioPlayer.play(url);
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget suggestSongNo(){
+    return SizedBox(
+      width: double.infinity,
+      height: 350,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/emutherapy-aae03.appspot.com/o/image%2Fempty.png?alt=media&token=aef96eca-3b07-422c-b4d9-410c9fd7a752",
+              height: 120,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          const Text("No Song"),
+          const SizedBox(
+            height: 5,
+          ),
+          const Text("No Artist"),
+          Slider(
+              activeColor: darkOrangeColor,
+              inactiveColor: secondBGColor,
+              min: 0,
+              max: duration.inSeconds.toDouble(),
+              value: position.inSeconds.toDouble(),
+              onChanged: (value) async {
+                final position = Duration(seconds: value.toInt());
+                await audioPlayer.seek(position);
+
+                await audioPlayer.resume();
+              }
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(formatTime(position)),
+                Text(formatTime(duration - position))
+              ],
+            ),
+          ),
+          CircleAvatar(
+            backgroundColor: darkOrangeColor,
+            radius: 35,
+            child: IconButton(
+              color: mainFontColor,
+              icon: Icon(
+                isPlaying ? Icons.pause_circle: Icons.play_circle,
+              ),
+              iconSize: 50,
+              onPressed: () async {
+                if(isPlaying) {
+                  await audioPlayer.pause();
+                }else {
+                  String url = "";
+                  await audioPlayer.play(url);
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }
