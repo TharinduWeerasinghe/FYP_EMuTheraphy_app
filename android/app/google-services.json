@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "459830738666",
+    "project_id": "emutherapy-aae03",
+    "storage_bucket": "emutherapy-aae03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459830738666:android:fa588bd86e1f76ec10a193",
+        "android_client_info": {
+          "package_name": "com.example.emutherapy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459830738666-7r6iltik3g1s65qn7ovo028357unk3g9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWxDoD_FzExFsvOMDEGPYVFwrYy0UCDyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459830738666-7r6iltik3g1s65qn7ovo028357unk3g9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

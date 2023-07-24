@@ -1,15 +1,37 @@
-import 'package:emutherapy/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '/main.dart';
+import '/colors.dart';
+import '/screens/pages/register_page.dart';
+
 class LogInPage extends StatefulWidget {
-  const LogInPage({Key? key}) : super(key: key);
+
+  final VoidCallback onClickRegister;
+
+  const LogInPage({
+    Key? key,
+    required this.onClickRegister,
+  }) : super(key: key);
 
   @override
   State<LogInPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose(){
+    super.dispose();
+
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +85,7 @@ class _LogInPageState extends State<LogInPage> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.email_outlined, color: mainFontColor,),
                           hintText: "User Email",
@@ -85,12 +108,13 @@ class _LogInPageState extends State<LogInPage> {
                             fontStyle: FontStyle.italic,
                           ),
                         ),
-                        onChanged: (value){},
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.password, color: mainFontColor,),
                           hintText: "Password",
@@ -113,10 +137,22 @@ class _LogInPageState extends State<LogInPage> {
                             fontStyle: FontStyle.italic,
                           ),
                         ),
-                        onChanged: (value){},
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.width * 0.1,
+                        height: MediaQuery.of(context).size.width * 0.01,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: mainFontColor,
+                            padding: EdgeInsets.zero,
+                          ),
+                          onPressed: () {
+
+                          },
+                          child: const Text('Forgot Password'),
+                        ),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -125,20 +161,31 @@ class _LogInPageState extends State<LogInPage> {
                           minimumSize: Size(MediaQuery.of(context).size.width * 0.7, MediaQuery.of(context).size.width * 0.14),
                         ),
                           onPressed: (){
-                            debugPrint("Log In");
+                            logIn();
                           },
                           child: const Text("Log In")
                       ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: mainFontColor,
-                          padding: EdgeInsets.zero,
-                          ),
-                        onPressed: () {
-                          debugPrint("Text B");
-                        },
-                        child: const Text('Register'),
-                      )
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            text: 'No account?   ',
+                            children: [
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()..onTap = widget.onClickRegister,
+                                text: 'Register',
+                                style: const TextStyle(
+                                  color: mainFontColor,
+                                ),
+                              )
+                            ]
+                          )
+                      ),
+
                     ],
                   ),
                 ),
@@ -148,5 +195,26 @@ class _LogInPageState extends State<LogInPage> {
         ),
       ),
     );
+  }
+
+  Future logIn() async{
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center( child: CircularProgressIndicator(),)
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+
   }
 }

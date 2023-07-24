@@ -37,6 +37,32 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_preview: ^1.1.0
 
+  #Firebase Database
+  cloud_firestore: ^4.5.2
+  firebase_storage: ^11.1.1
+  #cloud_firestore: ^3.1.5
+  firebase_core_platform_interface: 4.6.0
+  #firebase_storage: ^3.1.5
+
+
+  #Firebase
+  #firebase_auth: ^3.3.4
+  firebase_auth: ^4.4.0
+
+  #Validate EMail
+  email_validator: ^2.0.1
+
+  #Image Picker
+  image_picker: ^0.8.7+1
+
+  #File Picker
+  file_picker: ^5.2.10
+
+  #audio player
+  audioplayers: ^0.20.1
+
+  http: ^0.13.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -62,7 +88,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/icons/l_icon_img.png
+     - assets/icons/logo.png
      - assets/images/l_img.png
+     - assets/images/r_img.png
+     - assets/images/default_user.png
+     - assets/images/contact_t_img.png
+     - assets/images/contact_d_img.png
      - assets/images/testimg.jpg
      - assets/images/happy_img.png
      - assets/images/sad_img.png
