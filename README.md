@@ -30,7 +30,7 @@ To ensure user security and privacy, the app offers a secure login activity. Use
 #### 7. Cross-platform Compatibility: 
 Whether you own an Android smartphone or an iOS device, our app ensures universal accessibility, allowing users across both platforms to benefit from its features and functionalities.
 
-[Click here to watch EMuTherapy Mobile Application Demonstration](https://youtu.be/9-fN9D_mX0U)
+[Click here to watch EMuTherapy Mobile Application Demonstration](https://youtu.be/9-fN9D_mX0U){:target="_blank"}
 
 <div align="center">
 <img src="https://github.com/TharinduWeerasinghe/FYP_EMuTheraphy_app/blob/e5bae81f65a96c795313845b19f98851d500fdbe/assets/functions_uis.png" width="400px" height="200px">
